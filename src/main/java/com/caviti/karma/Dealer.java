@@ -1,17 +1,19 @@
 package com.caviti.karma;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Arrays;
 import java.util.Random;
 
 /**
  * This is the dealer class. Handles creating decks, shuffling cards, and 
  * dealing cards to players.
  * 
- * @author Siku Mahayi
+ * @author Siku Mahayi, g19m0934@campus.ru.ac.za
  */
 public class Dealer {
+    
+    private static List<Card> currentDeck;
     
     /**
      * Calculates the Shannon entropy for a given deck of cards. This method is
@@ -43,7 +45,7 @@ public class Dealer {
     }
     
     /**
-     * Generates an ordered deck of cards in the following order:
+     * Generates a deck of cards in the following order:
      * - Spades, A - 2 - ... - J - Q - K
      * - Diamonds, A - 2 - ... - J - Q - K
      * - Hearts, A - 2 - ... - J - Q - K
@@ -61,6 +63,7 @@ public class Dealer {
                 cards.add(new Card(i, s, false));
             }
         }
+        Dealer.currentDeck = cards;
         return cards;
     }
     
@@ -123,6 +126,46 @@ public class Dealer {
                 }
             }
         }
+        Dealer.currentDeck = newCards;
         return newCards;
+    }
+    
+    /**
+     * This is a simple shuffling algorithm that goes through the deck and swaps
+     * the current card with a random card. Copied almost line for line from my
+     * task 5 of prac 9
+     * 
+     * @param times: how many times you want to shuffle the deck
+     * @param cards: the deck you want to shuffle
+     * @return newCards: your deck but shuffled
+     */
+    public static List<Card> simpleShuffle(int times, List<Card> cards) {
+        Card[] newCards = cards.toArray(new Card[0]);
+        Random random = new Random();
+        for (int j = 0; j < times; j++) {
+            for (int i = 0; i < newCards.length; i++) {
+                int randomCard = random.nextInt(cards.size());
+                Card temp = newCards[i];
+                newCards[i] = newCards[randomCard];
+                newCards[randomCard] = temp;
+            }
+        }
+        Dealer.currentDeck = Arrays.asList(newCards);
+        return Arrays.asList(newCards);
+    }
+    
+    /**
+     * <p>This deals cards to any players passed as arguments. Pass your players 
+     * like this:</p>
+     * 
+     *      <code>dealCards(player1, player2, ..., playern);</code>
+     * 
+     * <p>Basically what I'm trying to say is that there aren't a fixed number of
+     * arguments for this method. Pass as many arguments as you have players.</p>
+     * 
+     * @param players: your players.
+     */
+    public static void dealCards(Player... players) {
+        // I'm still thinking about how I want to implement this.
     }
 }
