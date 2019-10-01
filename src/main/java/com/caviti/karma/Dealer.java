@@ -22,7 +22,7 @@ public class Dealer {
      * @param cards: your deck of cards
      * @return Shannon: the entropy for this deck
      */
-    private double getShannon(List<Card> cards) {
+    private static double getShannon(List<Card> cards) {
         int[] cardIndices = new int[52];
         for (int i = 0; i < cards.size(); i++) {
             cardIndices[i] = cards.get(i).getIndex();
@@ -56,7 +56,7 @@ public class Dealer {
      * 
      * @return cards: List of cards, not shuffled or anything
      */
-    private List<Card> makeCards() {
+    private static List<Card> makeCards() {
         List<Card> cards = new LinkedList<>();
         for (int i: new int[]{Card.SPADES, Card.DIAMONDS, Card.HEARTS, Card.CLUBS}) {
             for (String s: new String[]{"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}) {
@@ -154,6 +154,21 @@ public class Dealer {
         return Arrays.asList(newCards);
     }
     
+    
+    /**
+     * Get a nicely shuffled deck of cards with a Shannon entropy of at least 5.
+     * 
+     * @return cards: a nicely shuffled deck of cards
+     */
+    public static List<Card> getDeckOfCards() {
+        List<Card> cards = makeCards();
+        while (getShannon(cards) < 5) {
+            simpleShuffle(1, cards);
+            riffleShuffle(2, cards);
+        }
+        return cards;
+    }
+    
     /**
      * <p>This deals cards to any players passed as arguments. Pass your players 
      * like this:</p>
@@ -166,6 +181,24 @@ public class Dealer {
      * @param players: your players.
      */
     public static void dealCards(Player... players) {
-        // I'm still thinking about how I want to implement this.
+        List<Card> cards = getDeckOfCards();
+        for (int j = 0; j < players.length; j++) {
+            Card[] handCards = new Card[3];
+            Card[] tableCards = new Card[6];
+            for (int i = 0; i < handCards.length; i++) {
+                handCards[i] = cards.get(i);
+                cards.remove(0);
+            }
+            for (int i = 0; i < 3; i++) {
+                tableCards[i] = cards.get(i);
+                cards.remove(0);
+            }
+            for (int i = 3; i < 6; i++) {
+                tableCards[i] = cards.get(i);
+                tableCards[i].amIFaceUp(true);
+                cards.remove(0);
+            }
+            players[j].setCards(Arrays.asList(handCards), Arrays.asList(tableCards));
+        }
     }
 }
