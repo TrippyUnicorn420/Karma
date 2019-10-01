@@ -200,5 +200,17 @@ public class Dealer {
             }
             players[j].setCards(Arrays.asList(handCards), Arrays.asList(tableCards));
         }
+        Dealer.currentDeck = cards;
+    }
+    
+    /**
+     * Get the current deck. Ideally, you should use this after you've generated
+     * a new deck and have dealt cards to players so that you can play the game
+     * as normal.
+     * 
+     * @return 
+     */
+    public static List<Card> getCurrentDeck() {
+        return currentDeck;
     }
 }
