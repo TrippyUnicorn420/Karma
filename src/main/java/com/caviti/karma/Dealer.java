@@ -180,7 +180,7 @@ public class Dealer {
      * 
      * @param players: your players.
      */
-    public static void dealCards(Player... players) {
+    public static void dealCards(Player[] players) {
         List<Card> cards = getDeckOfCards();
         for (int j = 0; j < players.length; j++) {
             Card[] handCards = new Card[3];
