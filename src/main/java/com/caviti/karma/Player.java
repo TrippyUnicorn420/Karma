@@ -9,11 +9,12 @@ import java.util.List;
  */
 public class Player {
 
+    private String name;
     private List<Card> handCards;
     private List<Card> tableCards;
     
-    public Player() {
-        
+    public Player(String name) {
+        this.name = name;
     }
     
     /**
