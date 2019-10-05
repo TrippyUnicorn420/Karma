@@ -1,5 +1,6 @@
 package com.caviti.karma;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,6 +27,18 @@ public class Player {
     public void setCards(List<Card> handCards, List<Card> tableCards) {
         this.handCards = handCards;
         this.tableCards = tableCards;
+    }
+    
+    /**
+     * Oh hi! Um, I used this method to see if cards were actually being dealt
+     * to the players while testing the Dealer. This method is for debugging and
+     * unless you're me, you shouldn't be reading this.
+     * 
+     */
+    public void showMeYourCards() {
+        System.out.println("Hand cards: " + Arrays.toString(handCards.toArray(new Card[0])));
+        System.out.println("Table cards: " + Arrays.toString(tableCards.toArray(new Card[0])));
+
     }
     
     /**
