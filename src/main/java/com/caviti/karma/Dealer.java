@@ -68,65 +68,33 @@ public class Dealer {
     }
     
     /**
-     * Performs a riffle shuffle on a deck of cards. This is copied pretty much
-     * line for line from my task 3 of prac 9.
+     * Performs a riffle shuffle on a deck of cards.
      * 
-     * @param times: how many times you want to shuffle the deck
-     * @param cards: the deck you want to shuffle
+     * @param unshuffled: the deck you want to shuffle
      * @return newCards: your deck but shuffled
      */
-    public static List<Card> riffleShuffle(int times, List<Card> cards) {
-        List<Card> newCards = List.copyOf(cards);
+    public static List<Card> riffleShuffle(List<Card> unshuffled) {
+        Card[] cards = unshuffled.toArray(new Card[0]);
+        List<Card> newCards = new LinkedList<>();
         Random random = new Random();
-
-        for (int i = 0; i < times; i++) {
-            int split = 20 + random.nextInt(10);
-            Card[] cards_split1 = new Card[split];
-            Card[] cards_split2 = new Card[52-split];
-            
-            for (int idx = 0; i < cards_split1.length; i++) {
-                cards_split1[idx] = newCards.get(idx);
+        
+        int split = 20 + random.nextInt(10);
+        Card[] firstHalf = new Card[split];
+        Card[] secondHalf = new Card[52 - split];
+        System.arraycopy(cards, 0, firstHalf, 0, firstHalf.length);
+        System.arraycopy(cards, split, secondHalf, 0, secondHalf.length);
+        
+        int leftIndex = 0, rightIndex = 0, mainIndex = 0;
+        while (newCards.size() < 52) {
+            if (random.nextBoolean() && leftIndex < firstHalf.length) {
+                newCards.add(firstHalf[leftIndex]);
+                leftIndex++;
             }
-            
-            for (int idx = 0; i < cards_split2.length; i++) {
-                cards_split1[idx] = newCards.get(split + idx);
-            }
-            
-            int index = 0;
-            for (int j = 0; j < 52; j++) {
-                if (index > split) {
-                    if (cards_split1.length > cards_split2.length) {
-                        for (int k = 0; k < cards_split1.length - cards_split2.length; k++) {
-                            newCards.add(cards.get(index));
-                            index++;
-                        }
-                    }
-                    else {
-                        for (int k = 0; k < cards_split2.length - cards_split1.length; k++) {
-                            newCards.add(cards.get(index));
-                            index++;
-                        }
-                    }
-                    break;
-                }
-
-                if (random.nextBoolean()) {
-                    for (int k = 0; k < random.nextInt(3); k++) {
-                        if (index >= cards_split1.length) break;
-                        newCards.add(cards_split1[index]);
-                        index++;
-                    }
-                }
-                else {
-                    for (int k = 0; k < random.nextInt(3); k++) {
-                        if (index >= cards_split2.length) break;
-                        newCards.add(cards_split2[index]);
-                        index++;
-                    }
-                }
+            else if (rightIndex < secondHalf.length) {
+                newCards.add(secondHalf[rightIndex]);
+                rightIndex++;
             }
         }
-        Dealer.currentDeck = newCards;
         return newCards;
     }
     
@@ -150,8 +118,8 @@ public class Dealer {
                 newCards[randomCard] = temp;
             }
         }
-        Dealer.currentDeck = Arrays.asList(newCards);
-        return Arrays.asList(newCards);
+        Dealer.currentDeck = new LinkedList<>(Arrays.asList(newCards));
+        return new LinkedList<>(Arrays.asList(newCards));
     }
     
     
@@ -163,8 +131,8 @@ public class Dealer {
     public static List<Card> getDeckOfCards() {
         List<Card> cards = makeCards();
         while (getShannon(cards) < 5) {
-            simpleShuffle(1, cards);
-            riffleShuffle(2, cards);
+            cards = riffleShuffle(cards);
+            cards = simpleShuffle(1, cards);
         }
         return cards;
     }
@@ -208,7 +176,7 @@ public class Dealer {
      * a new deck and have dealt cards to players so that you can play the game
      * as normal.
      * 
-     * @return 
+     * @return the current deck
      */
     public static List<Card> getCurrentDeck() {
         return currentDeck;
