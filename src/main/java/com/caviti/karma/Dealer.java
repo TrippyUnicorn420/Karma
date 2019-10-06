@@ -14,6 +14,8 @@ import java.util.Random;
 public class Dealer {
     
     private static List<Card> currentDeck;
+    private static List<Card> tableDeck;
+    private static List<Card> discardDeck;
     
     /**
      * Calculates the Shannon entropy for a given deck of cards. This method is
@@ -146,30 +148,36 @@ public class Dealer {
      * <p>Basically what I'm trying to say is that there aren't a fixed number of
      * arguments for this method. Pass as many arguments as you have players.</p>
      * 
+     * The above was changed to just passing an array of Player objects.
+     * 
      * @param players: your players.
      */
+ 
+    
     public static void dealCards(Player[] players) {
         List<Card> cards = getDeckOfCards();
-        for (int j = 0; j < players.length; j++) {
+        Dealer.currentDeck = cards;
+        for (Player player : players) {
             Card[] handCards = new Card[3];
             Card[] tableCards = new Card[6];
             for (int i = 0; i < handCards.length; i++) {
-                handCards[i] = cards.get(i);
-                cards.remove(0);
+                handCards[i] = cards.get(cards.size()-1);
+                cards.remove(cards.size()-1);
             }
             for (int i = 0; i < 3; i++) {
                 tableCards[i] = cards.get(i);
                 cards.remove(0);
             }
             for (int i = 3; i < 6; i++) {
-                tableCards[i] = cards.get(i);
+                tableCards[i] = cards.get(cards.size()-1);
                 tableCards[i].amIFaceUp(true);
-                cards.remove(0);
+                cards.remove(cards.size()-1);
             }
-            players[j].setCards(Arrays.asList(handCards), Arrays.asList(tableCards));
+            player.setCards(Arrays.asList(handCards), Arrays.asList(tableCards));
         }
         Dealer.currentDeck = cards;
     }
+    
     
     /**
      * Get the current deck. Ideally, you should use this after you've generated
@@ -181,4 +189,14 @@ public class Dealer {
     public static List<Card> getCurrentDeck() {
         return currentDeck;
     }
+    
+    public static List<Card> getTableDeck() 
+    {
+        return tableDeck;
+    } //getter for tableDeck
+    
+    public static List<Card> getDiscardDeck() 
+    {
+        return discardDeck;
+    } // getter for discardDeck
 }
