@@ -1,5 +1,6 @@
 package com.caviti.karma;
 
+import static com.caviti.karma.Dealer.getTableDeck;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * 
  * @author Siku Mahayi, g19m0934@campus.ru.ac.za
  */
-public class Player {
+public class Player  {
 
     private String name;
     private List<Card> handCards;
@@ -17,6 +18,35 @@ public class Player {
     public Player(String name) {
         this.name = name;
     }
+    
+    public List<Card> gethandCards()
+    {
+        return this.handCards;
+    }
+    
+    public List<Card> geTableCards()
+    {
+        return this.tableCards;
+    }
+    
+    public void pickUp()
+    {
+        this.handCards.addAll(getTableDeck());
+    } //pickUp method for Player class
+    
+    public int hasCards()
+    {
+        int handnum = this.handCards.size();
+        int tablenum = this.tableCards.size();
+        int numCards = handnum + tablenum;
+        return numCards;
+    } //hasCards method for Player class
+    
+    @Override
+    public String toString()
+    {
+        return String.format(this.name);
+    } //toString method for Player class
     
     /**
      * Give the cards to a player. 
