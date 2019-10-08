@@ -156,7 +156,6 @@ public class Dealer {
     
     public static void dealCards(Player[] players) {
         List<Card> cards = getDeckOfCards();
-        Dealer.currentDeck = cards;
         for (Player player : players) {
             Card[] handCards = new Card[3];
             Card[] tableCards = new Card[6];
@@ -175,17 +174,50 @@ public class Dealer {
             }
             player.setCards(Arrays.asList(handCards), Arrays.asList(tableCards));
         }
-        Dealer.currentDeck = cards;
+        Dealer.currentDeck.addAll(cards);
     }
     
     
     /**
-     * Get the current deck. Ideally, you should use this after you've generated
+     * Get the current deck.Ideally, you should use this after you've generated
      * a new deck and have dealt cards to players so that you can play the game
      * as normal.
      * 
+     * @param c
      * @return the current deck
      */
+    public static void addCard(Card c)
+    {
+        Dealer.tableDeck.add(c);
+    }
+    
+    public static Card getCard()
+    {
+        Card c = Dealer.currentDeck.get(Dealer.currentDeck.size()-1);
+        Dealer.currentDeck.remove(Dealer.currentDeck.size()-1);
+        return c;
+    }
+    
+    public static Card showTopCard()
+    {
+        Card c = Dealer.tableDeck.get(Dealer.tableDeck.size()-1);
+        return c;
+    }
+    
+    public static void initializeTableDeck()
+    {
+        List<Card> cards = Dealer.getCurrentDeck();
+        List<Card> Deck = new LinkedList<>();
+        Deck.add(cards.get(cards.size()-1));
+        cards.remove(cards.size()-1);
+       Dealer.tableDeck = Deck;
+    }
+    
+    public static void clearPile()
+    {
+        Dealer.tableDeck.clear();
+    }
+    
     public static List<Card> getCurrentDeck() {
         return currentDeck;
     }
