@@ -23,6 +23,7 @@ public class Game
         while (Karma.endGame == false)
         {
             Karma.gameLoop(Karma.currentPlayer);
+            
         }
     }
     
@@ -34,7 +35,7 @@ public class Game
             System.out.println("How many players???");
             int numPlayers = in.nextInt();
             Player[] thePlayers = new Player[numPlayers];
-               for (int i=0; i<numPlayers; i++)
+                for (int i=0; i<numPlayers; i++)
                 {
                     System.out.println("Enter player name!!");
                     String playerName = in.next();
@@ -42,12 +43,13 @@ public class Game
                     thePlayers[i] = newPlayer;
                 }
             this.Players = thePlayers;
-            dealCards(Players);
+            dealCards(this.Players);
             this.currentPlayer = this.Players[0];
+            Dealer.initializeTableDeck();
         }
-        catch (NumberFormatException e)
+        catch (Exception e)
         {
-            System.out.println("Please enter a number!!!");
+            System.out.println("I don't understand you!!");
            /**
             *  how to repeat!!!!
             **/
@@ -58,24 +60,58 @@ public class Game
     {
         Scanner in = new Scanner(System.in);
         int index = 0; int playerIndex = 0;
-        playerIndex += 1;
-        if(playerIndex > this.Players.length)
-        {
-            playerIndex -= 3;
-        }
-
-        System.out.println("");
-        String command = in.nextLine();
         
-        switch (command)
+        if(playerIndex > this.Players.length-1)
         {
-            case (""):
-                
-                
-            case ("x"):
-               this.currentPlayer.pickUp();
-                
+            playerIndex -= this.Players.length;
         }
+        System.out.println("It is "+ this.currentPlayer + "'s turn!");
+        System.out.print("Your hand: ");
+        System.out.println(this.currentPlayer.getHandCards());
+        System.out.print("Top card of tableDeck: ");
+        System.out.println(Dealer.showTopCard());
+        System.out.println("Would you like to play a card or bust?");
+        String command = in.nextLine();
+        try 
+        {
+            String[] commands = command.split(" ");
+            if ("play".equals(commands[0]))
+            {
+                
+                int num = Integer.parseInt(commands[1]);
+                if (Dealer.showTopCard().compareTo(this.currentPlayer.getHandCards().get(num)))
+                {
+                    this.currentPlayer.play(num);
+                    
+                   /////TO DO! 
+                }
+                else
+                {
+                    System.out.println("You cannot play that card!!"); 
+                }
+            }
+                
+            if (this.currentPlayer.getHandCards().size() < 3)
+            {
+                this.currentPlayer.pickUp();
+            }
+            
+        }
+        catch(Exception e)
+        {
+            if (command.equals("bust"))
+            {
+                this.currentPlayer.pickUpPile();
+                Dealer.initializeTableDeck();
+            }
+            else
+            {
+                System.out.println("I don't understand you!!");
+            }
+        }
+        
+        List<Card> Deck = Dealer.getTableDeck();
+        System.out.println(Deck.get(Deck.size()-1));
         
         if (this.currentPlayer.hasCards() == 0)
         {
@@ -85,66 +121,4 @@ public class Game
         this.endGame = false;
     }
     
-    /*
-     * The below methods belong to other classes and will be moved 
-     * there at a later date. 
-     */ 
-    /*
-    
-    public String toString()
-    {
-        return String.format("Player: %s" , this.playerName);
-    } //toString method for Player class
-    
-    public int hasCards()
-    {
-        handnum = this.handCards.size();
-        tablenum = this.tableCards.size();
-        numCards = handnum + tablenum;
-        return numCards;
-    } //hasCards method for Player class
-    
-    public void pickUp()
-    {
-        this.handCards.addAll(getTableDeck());
-    } //pickUp method for Player class
-    
-    public static List<Card> getTableDeck() 
-    {
-        return tableDeck;
-    } //getter for tableDeck
-    
-    public static List<Card> getDiscardDeck() 
-    {
-        return discardDeck;
-    } // getter for discardDeck
-    
-    public boolean compareTo(Card c)
-    {
-        try
-        {
-            int x = Integer.parseInt(this.getValue());
-            int y = Integer.parseInt(c.getValue());
-            
-            return x >= y;
-        }
-        catch (NumberFormatException e)
-        {
-            String[] Vals = {"K", "Q", "J", "A"};
-            int x = 0; int y = 0;
-            for (int i=11; i<Vals.length+11; i++)
-            {
-                if (this.getValue().equals(Vals[i-11]))
-                {
-                    x = i;
-                }   
-                if (c.getValue().equals(Vals[i-11]))
-                {
-                    y = i;
-                }
-            }
-            return x >= y;
-        }
-    } //compareTo for the Card class
-    */
 }
