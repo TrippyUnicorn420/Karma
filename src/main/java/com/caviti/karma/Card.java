@@ -118,10 +118,10 @@ public class Card {
     {
         try
         {
-            int x = Integer.parseInt(this.getValue());
-            int y = Integer.parseInt(c.getValue());
+            int x = Integer.parseInt(this.value);
+            int y = Integer.parseInt(c.value);
             
-            return x >= y;
+            return x <= y;
         }
         catch (NumberFormatException e)
         {
@@ -129,16 +129,16 @@ public class Card {
             int x = 0; int y = 0;
             for (int i=11; i<Vals.length+11; i++)
             {
-                if (this.getValue().equals(Vals[i-11]))
+                if (this.value.equals(Vals[i-11]))
                 {
                     x = i;
                 }   
-                if (c.getValue().equals(Vals[i-11]))
+                if (c.value.equals(Vals[i-11]))
                 {
                     y = i;
                 }
             }
-            return x >= y;
+            return x <= y;
         }
     }
     
