@@ -19,7 +19,7 @@ public class Player  {
         this.name = name;
     }
     
-    public List<Card> gethandCards()
+    public List<Card> getHandCards()
     {
         return this.handCards;
     }
@@ -31,7 +31,17 @@ public class Player  {
     
     public void pickUp()
     {
-        this.handCards.addAll(getTableDeck());
+        this.handCards.add(Dealer.getCard());
+    }
+    
+    public void pickUpPile()
+    {
+        List<Card> Deck = Dealer.getTableDeck();
+        for (int i=0; i<Deck.size(); i++)
+        {
+            this.handCards.add(Deck.get(i));
+        }
+        Dealer.clearPile();
     } //pickUp method for Player class
     
     public int hasCards()
@@ -40,7 +50,8 @@ public class Player  {
         int tablenum = this.tableCards.size();
         int numCards = handnum + tablenum;
         return numCards;
-    } //hasCards method for Player class
+    } //hasCards method for Player cla
+    
     
     @Override
     public String toString()
@@ -72,13 +83,14 @@ public class Player  {
     }
     
     /**
-     * Make a play. Remove cards from your hand, and the game overseer handles
+     * Make a play.Remove cards from your hand, and the game overseer handles
      * what happens depending on what card(s) are played.
      * 
-     * @param cards 
      */
-    public void play(Card... cards) {
-        // Waiting on how Tim is going to handle plays being made
+    public void play(int i) 
+    {
+        Dealer.addCard(this.handCards.get(i-1));
+        this.handCards.remove(i-1);
     }
     
 }
