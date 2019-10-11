@@ -23,6 +23,7 @@ We also used Java 11, so make sure you're running that or later.
 - No, like, everything else.
 - We're being serious.
 - Playing the game itself is iffy at times -- sometimes you may get an ArrayIndexOutOfBoundsException.
-- We haven't actually played to the point where you can win the game, so we're not sure if that works either.
+- We haven't actually played to the point where you can win the game, so we're not sure if that works either.  
+- There really isn't much of a GUI to speak of, either.
 
 It's been a pretty painful journey in the creation of this game. So... yeah.
