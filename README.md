@@ -2,6 +2,11 @@
 
 Our implementation of the Karma game in Java.
 
+## How to build:
+We used Apache NetBeans 11 to make this, so, uh, make sure you have that installed.  
+Perform a `git clone` on this repo, and open the folder where it was cloned as you would any project in NetBeans.  
+We also used Java 11, so make sure you're running that or later.
+
 ## What works:
 
 - Player creation.
