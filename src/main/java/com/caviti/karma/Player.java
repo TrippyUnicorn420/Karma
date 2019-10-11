@@ -24,7 +24,7 @@ public class Player  {
         return this.handCards;
     }
     
-    public List<Card> geTableCards()
+    public List<Card> getTableCards()
     {
         return this.tableCards;
     }
